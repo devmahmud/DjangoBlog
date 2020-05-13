@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, TemplateView
+from django.views.generic import View, ListView, DetailView, TemplateView
+from django.views.generic.edit import FormMixin
 from taggit.models import Tag
 
 from .models import Post
@@ -23,8 +24,18 @@ class PostListView(ListView):
         return context
 
 
-class PostDetailView(TemplateView):
+class PostDetailView(FormMixin, DetailView):
     template_name = 'blog/post-detail.html'
+
+    def get_object(self):
+        obj = get_object_or_404(Post, status='published',
+            slug=self.kwargs.get('slug'),
+            publish__year=self.kwargs.get('year'),
+            publish__month=self.kwargs.get('month'),
+            publish__day=self.kwargs.get('day')
+        )
+        return obj
+
 
 class PostSearchView(TemplateView):
     template_name = 'blog/post-search.html'
