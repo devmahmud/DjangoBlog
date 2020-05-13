@@ -29,6 +29,26 @@
           {{ object.body }}
         <hr>
 
+        <h2 class="bg-primary p-2 text-white">Similar posts</h2>
+        <div class="row">
+          {% for post in similar_posts %}
+            <div class="col-md-4">
+              <div class="card" style="width: 200px">
+                <div class="card-image-top">
+                  <img src="{{ object.image.url}}" alt="" class="img-fluid">
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                  </h5>
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            There are no similar posts yet.
+          {% endfor %}
+        </div>
+
         <!-- Comments Form -->
         <div class="card my-4">
           <h5 class="card-header">Leave a Comment:</h5>
