@@ -12,6 +12,7 @@
         <h2 class="my-4">
           Blog Posts
           {% if tag %}<small>Posts tagged with "{{ tag }}"</small>{% endif %}
+          {% if query %}<small>Search result for "{{ query }}"</small>{% endif %}
         </h2>
 
         {% for post in object_list %}
@@ -59,18 +60,7 @@
       <!-- Sidebar Widgets Column -->
       <div class="col-md-4">
 
-        <!-- Search Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">Search</h5>
-          <div class="card-body">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search for...">
-              <span class="input-group-btn">
-                <button class="btn btn-secondary" type="button">Go!</button>
-              </span>
-            </div>
-          </div>
-        </div>
+       {% include 'partials/_search.html' %}
 
         <!-- Categories Widget -->
         <div class="card my-4">
