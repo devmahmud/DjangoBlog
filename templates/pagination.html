@@ -1,0 +1,14 @@
+<!-- Pagination -->
+<ul class="pagination justify-content-center mb-4">
+    {% if page.has_previous %}
+        <li class="page-item">
+         <a class="page-link" href="?page={{ page.previous_page_number }}">&laquo; Previous</a>
+        </li>
+    {% endif %}
+    
+    {% if page.has_next %}
+     <li class="page-item">
+        <a class="page-link" href="?page={{ page.next_page_number }}">Next &raquo;</a>
+     </li>
+    {% endif %}
+</ul>
