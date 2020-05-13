@@ -10,6 +10,7 @@ app_name = 'blog'
 
 urlpatterns = [
     path('', PostListView.as_view(), name='post_list'),
-    path('detail/', PostDetailView.as_view(), name='post_detail'),
+    path('tag/<slug:tag_slug>/', PostListView.as_view(), name='post_list_by_tag'),
+    path('<int:year>/<int:month>/<int:day>/<slug:slug>/', PostDetailView.as_view(), name='post_detail'),
     path('search/', PostSearchView.as_view(), name='post_search'),
 ]
