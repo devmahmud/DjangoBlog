@@ -54,9 +54,37 @@
         <div class="card my-4">
           <h5 class="card-header">Leave a Comment:</h5>
           <div class="card-body">
-            <form>
+            <form action={{ object.get_absolute_url }} method="POST">
+            
+              {% csrf_token %}
               <div class="form-group">
-                <textarea class="form-control" rows="3"></textarea>
+                <label for="name">{{ form.name.label_tag }}</label>
+                <input type="text" class="form-control {% if form.name.errors %}is-invalid{% endif %}" name="name"
+                id="id_name" placeholder="Your name" value="{{ form.name.value|default:""}}">
+                {% if form.name.errors %}
+                  <div class="invalid-feedback">
+                    {{ form.name.errors }}
+                  </div>
+                {% endif %}
+              </div>
+              
+              <div class="form-group">
+                <label for="email">{{ form.email.label_tag }}</label>
+                <input type="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}" name="email" id="id_email"
+                placeholder="Your email" value="{{ form.email.value|default:""}}">
+                {% if form.email.errors %}
+                  <div class="invalid-feedback">
+                    {{ form.email.errors }}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="form-group">
+                {{form.body.label_tag}}
+                <textarea name="body" id="id_body" class="form-control {% if form.body.errors %}is-invalid{% endif %}" rows="3" 
+                placeholder="What you wanna tell?">{{ form.body.value|default:""}}</textarea>
+                 <div class="invalid-feedback">
+                    {{ form.body.errors }}
+                  </div>
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -73,7 +101,7 @@
         <!-- Single Comment -->
         <div class="media mb-4">
           <div class="media-body">
-            <h5 class="mt-0"> Comment {{ forloop.counter }} by {{ comment.name }} {{ comment.created }}</h5>
+            <h5 class="mt-0"> Comment {{ forloop.counter }} by <span class="text-secondary">{{ comment.name }}</span> {{ comment.created }}</h5>
              {{ comment.body|linebreaks }}
           </div>
         </div>
