@@ -30,7 +30,7 @@
           {{ object.body }}
         <hr>
 
-        <h2 class="bg-primary p-2 text-white">Similar posts</h2>
+        <h3 class="bg-primary p-2 text-white mb-3">Similar posts</h3>
         <div class="row">
           {% for post in similar_posts %}
             <div class="col-md-4">
@@ -63,42 +63,24 @@
           </div>
         </div>
 
+        {% with comments.count as total_comments %}
+          <h3 class="bg-primary p-2 text-white mb-3">
+            {{ total_comments }} comment{{ total_comments|pluralize }}
+          </h3>
+        {% endwith %}
+
+        {% for comment in comments %}
         <!-- Single Comment -->
         <div class="media mb-4">
-          <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
           <div class="media-body">
-            <h5 class="mt-0">Commenter Name</h5>
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+            <h5 class="mt-0"> Comment {{ forloop.counter }} by {{ comment.name }} {{ comment.created }}</h5>
+             {{ comment.body|linebreaks }}
           </div>
         </div>
+        {% endfor %}
 
-        <!-- Comment with nested comments -->
-        <div class="media mb-4">
-          <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-          <div class="media-body">
-            <h5 class="mt-0">Commenter Name</h5>
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-
-            <div class="media mt-4">
-              <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-              <div class="media-body">
-                <h5 class="mt-0">Commenter Name</h5>
-                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-              </div>
-            </div>
-
-            <div class="media mt-4">
-              <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-              <div class="media-body">
-                <h5 class="mt-0">Commenter Name</h5>
-                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-              </div>
-            </div>
-
-          </div>
-        </div>
       </div>
-
+      
       <!-- Sidebar Widgets Column -->
       <div class="col-md-4">
 
@@ -111,13 +93,13 @@
           <h5 class="card-header">Most Commented Post</h5>
           <div class="card-body">
            {% get_most_commented_posts as most_commented_posts %}
-          <ul class="list-unstyled">
-            {% for post in most_commented_posts %}
-              <li>
-                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-              </li>
-            {% endfor %}
-          </ul>
+            <ul class="list-unstyled">
+              {% for post in most_commented_posts %}
+                <li>
+                  <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
           </div>
         </div>
       </div>
