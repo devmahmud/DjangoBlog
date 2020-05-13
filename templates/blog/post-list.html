@@ -11,7 +11,7 @@
 
         <h2 class="my-4">
           Blog Posts
-          <small>Posts tagged with "{{ tag.name }}"</small>
+          {% if tag %}<small>Posts tagged with "{{ tag }}"</small>{% endif %}
         </h2>
 
         {% for post in object_list %}
