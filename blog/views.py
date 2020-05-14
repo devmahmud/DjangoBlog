@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import View, ListView, DetailView, TemplateView
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
-from django.views.generic.edit import FormMixin
+from django.views.generic.edit import FormMixin, FormView
+from django.core.mail import send_mail
 from django.db.models import Count
 from taggit.models import Tag
 
 from .models import Post, Comment
-from .forms import CommentForm
+from .forms import CommentForm, EmailPostForm
 
 class PostListView(ListView):
     paginate_by = 3
@@ -80,3 +81,31 @@ class PostDetailView(FormMixin, DetailView):
         else:
             print("Invalid form")
             return self.form_invalid(form)
+
+
+class PostShareView(FormView):
+    form_class = EmailPostForm
+    template_name = 'blog/post-share.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["post"] = get_object_or_404(Post, id= self.kwargs.get('post_id'))
+        context["sent"] = False
+        return context
+    
+    def form_valid(self, form):
+        context = self.get_context_data()
+        # Send Email
+        cd = form.cleaned_data
+        post = context['post']
+        post_url = self.request.build_absolute_uri(
+                post.get_absolute_url()
+            )
+        subject = f"{cd['name']} recommends you read {post.title}"
+        message = f"Read {post.title} at {post_url}\n\n" \
+                f"{cd['name']}\'s comments: {cd['comments']}"
+        send_mail(subject, message, 'admin@myblog.com', [cd['to']])
+        
+        context['sent'] = True
+        context['form'] = form
+        return self.render_to_response(context)

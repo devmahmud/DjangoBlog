@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load blog_tags %}
+
+{% block content %}
+ <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <!-- Post Content Column -->
+      <div class="col-lg-8 mt-4">
+        <h5 class="card-header">Share "{{ post.title }}" by e-mail</h5>
+          {% if sent %}
+          <h1>E-mail successfully sent</h1>
+          <p>
+            "{{ post.title }}" was successfully sent to {{ form.cleaned_data.to }}.
+          </p>
+        {% else %}
+          <div class="card-body">
+            <form action="{% url 'blog:post_share' post.id %}" method="POST">
+            
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="name">{{ form.name.label_tag }}</label>
+                <input type="text" class="form-control {% if form.name.errors %}is-invalid{% endif %}" name="name"
+                id="id_name" placeholder="Your name" value="{{ form.name.value|default:""}}">
+                {% if form.name.errors %}
+                  <div class="invalid-feedback">
+                    {{ form.name.errors }}
+                  </div>
+                {% endif %}
+              </div>
+              
+              <div class="form-group">
+                <label for="email">{{ form.email.label_tag }}</label>
+                <input type="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}" name="email" id="id_email"
+                placeholder="Your email" value="{{ form.email.value|default:""}}">
+                {% if form.email.errors %}
+                  <div class="invalid-feedback">
+                    {{ form.email.errors }}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="form-group">
+                <label for="to">{{ form.to.label_tag }}</label>
+                <input type="email" class="form-control {% if form.to.errors %}is-invalid{% endif %}" name="to" id="id_to"
+                placeholder="Receiver email" value="{{ form.to.value|default:""}}">
+                {% if form.to.errors %}
+                  <div class="invalid-feedback">
+                    {{ form.to.errors }}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="form-group">
+                {{form.comments.label_tag}}
+                <textarea name="comments" id="id_comments" class="form-control" rows="3" 
+                placeholder="What you wanna tell?">{{ form.comments.value|default:""}}</textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+          {% endif %}
+      </div>
+
+      <!-- Sidebar Widgets Column -->
+      <div class="col-md-4">
+
+        {% include 'partials/_search.html' %}
+
+        {% show_latest_posts 5 %}
+
+        <!-- Side Widget -->
+        <div class="card my-4">
+          <h5 class="card-header">Most Commented Post</h5>
+          <div class="card-body">
+           {% get_most_commented_posts as most_commented_posts %}
+            <ul class="list-unstyled">
+              {% for post in most_commented_posts %}
+                <li>
+                  <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+{% endblock content %}
