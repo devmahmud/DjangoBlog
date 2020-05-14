@@ -13,9 +13,9 @@ urlpatterns = [
     path('', include('blog.urls', namespace='blog')),
     path('admin/', admin.site.urls),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
-        name='django.contrib.sitempas.views.sitemap'
-    )
+         name='django.contrib.sitempas.views.sitemap')
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
