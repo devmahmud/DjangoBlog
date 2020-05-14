@@ -5,3 +5,4 @@ exclude =
     manage.py,
     settings.py,
     media,
+    venv
