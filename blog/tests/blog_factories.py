@@ -34,7 +34,7 @@ class PostFactory(factory.DjangoModelFactory):
     title = factory.Faker('sentence')
     slug = factory.Faker('slug')
     author = factory.SubFactory(UserFactory)
-    body = factory.Faker('sentences')
+    body = factory.Faker('text')
     image = factory.django.ImageField(
         color=factory.fuzzy.FuzzyChoice(['blue', 'yellow', 'green', 'orange']),
         height=720,
@@ -58,4 +58,4 @@ class CommentFactory(factory.DjangoModelFactory):
     post = factory.SubFactory(PostFactory)
     name = factory.Faker('name')
     email = factory.Faker('email')
-    body = factory.Faker('paragraph')
+    body = factory.Faker('text')
