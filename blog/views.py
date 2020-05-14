@@ -13,7 +13,7 @@ from .forms import CommentForm, EmailPostForm
 
 
 class PostListView(ListView):
-    paginate_by = 3
+    paginate_by = 10
     template_name = 'blog/post-list.html'
 
     def get_queryset(self, **kwargs):
