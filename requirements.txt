@@ -7,7 +7,7 @@ Faker==4.1.0
 flake8==3.8.1
 Markdown==3.2.2
 mccabe==0.6.1
-Pillow==7.1.2
+Pillow==8.2.0
 psycopg2==2.8.5
 pycodestyle==2.6.0
 pyflakes==2.2.0
